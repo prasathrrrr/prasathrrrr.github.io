@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Photos — gallery</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* gallery uses full-bleed hero styles from css/styles.css */
+  </style>
+</head>
+<body>
+  <header class="topbar"><nav><a class="logo" href="index.html">Prasath</a></nav></header>
+  <div id="gallery-root"></div>
+
+  <script>
+    // Read ?city=slug
+    const params = new URLSearchParams(location.search);
+    const city = params.get('city');
+
+    async function loadGallery(slug){
+      try{
+        const res = await fetch('assets/travel/index.json');
+        const index = await res.json();
+        const entry = index.find(i=>i.slug === slug);
+        if(!entry){
+          document.getElementById('gallery-root').textContent = 'City not found in index.';
+          return;
+        }
+        // no overlay caption; gallery shows full-bleed photos only
+        // We'll attempt to load images from entry.folder using a simple convention:
+        // image-1.jpg, image-2.jpg, ..., if you need a different naming, update index.json to include a list.
+        const root = document.getElementById('gallery-root');
+        root.innerHTML = '';
+        // Try to load up to 40 images (stop on first 404 sequence)
+        const max = 40;
+        let foundAny = false;
+        for(let i=1;i<=max;i++){
+          const path = `${entry.folder}/image-${i}.jpg`;
+          // create a hero section but only append once the image loads successfully
+          await new Promise((resolve)=>{
+            const img = new Image();
+            img.onload = ()=>{
+              foundAny = true;
+              const main = document.createElement('main');
+              main.className = 'hero';
+              const div = document.createElement('div');
+              div.className = 'photo';
+              div.setAttribute('role','img');
+              div.setAttribute('aria-label', entry.title + ' photo');
+              div.style.backgroundImage = `url('${path}')`;
+              main.appendChild(div);
+              root.appendChild(main);
+              resolve();
+            };
+            img.onerror = ()=>{
+              // if first few fail continue, but if we've already found images and hit a gap, stop
+              resolve();
+            };
+            img.src = path;
+          });
+        }
+        if(!foundAny){
+          root.textContent = 'No images found. Place images named image-1.jpg, image-2.jpg, ... in the folder: ' + entry.folder;
+        }
+        // Scroll to top (intro behavior on this page is not used)
+        window.scrollTo(0,0);
+      }catch(err){
+        document.getElementById('gallery-root').textContent = 'Failed to load gallery.';
+        console.error(err);
+      }
+    }
+
+    if(city){ loadGallery(city); } else { document.getElementById('gallery-root').textContent = 'No city selected.' }
+  </script>
+</body>
+</html>

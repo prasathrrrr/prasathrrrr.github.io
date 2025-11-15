@@ -1,0 +1,169 @@
+/* aesthetic hero with 16:9 photo and SVG painted text */
+:root{
+  --accent:#b61a1a;
+  --accent-dark:rgba(150,10,10,0.95);
+  --nav-font: 'Dela Gothic One', system-ui, -apple-system, sans-serif;
+  --title-font: 'Dela Gothic One', serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--nav-font);background:#000;color:#fff}
+
+.topbar{position:fixed;left:0;right:0;top:0;height:72px;display:flex;align-items:center;pointer-events:auto;z-index:9999}
+.topbar nav{width:100%;display:flex;justify-content:flex-start;align-items:center;padding:0 24px;pointer-events:auto}
+.topbar a{color:#eaeaea;text-decoration:none;font-size:14px;opacity:.9}
+.logo{font-family:var(--nav-font);font-size:22px;color:#fff;font-weight:700;margin-right:14px;pointer-events:auto;margin-left:6px}
+.topbar .logo{margin-left:40px}
+
+.hero{display:flex;align-items:center;justify-content:center;height:100vh}
+.photo{width:100%;height:100%;min-height:420px;position:relative;overflow:hidden;background-image:url('../assets/photo.jpg');background-size:cover;background-position:center center;display:flex;align-items:center;justify-content:center}
+
+/* Maintain a visible 16:9band centered on tall viewports */
+.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.15));pointer-events:none}
+
+.hero-text{position:relative; width:110%; height:60vh; max-height:400px; overflow:visible}
+.hero-text .paint{font-family:var(--title-font);font-weight:900;font-size:220px;letter-spacing: -6px; fill:transparent; stroke:var(--accent-dark); stroke-width:12; stroke-linecap:round; stroke-linejoin:round; paint-order:stroke; filter: none; text-transform:uppercase}
+
+/* stroke draw animation */
+.hero-text .paint{stroke-dasharray:2500; stroke-dashoffset:2500; animation:draw 2.6s ease forwards, fillFade 0.8s 2.7s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fillFade{from{fill:transparent}to{fill:rgba(182,26,26,0.9)}}
+
+/* subtle wobble for a living feel */
+.hero-text{animation:float 8s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.side-label{position:absolute;top:48%;transform:translateY(-50%);font-family:var(--nav-font);font-size:14px;color:#f3f3f3;opacity:.95}
+.side-label{position:fixed;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;pointer-events:none;opacity:0;transition:opacity .35s ease, transform .45s cubic-bezier(.2,.9,.2,1);z-index:1500}
+.side-label.left{left:40px;pointer-events:auto}
+.side-label.right{right:40px;pointer-events:auto}
+.side-link{color:#f3f3f3;text-decoration:none;padding:6px 8px;border-radius:4px;font-size:13px;display:inline-block;position:relative;z-index:1510}
+.side-link:hover{background:rgba(255,255,255,0.03);transform:translateY(-3px)}
+
+/* Visible state when intro is gone and hero is showing */
+body.labels-visible .side-label{opacity:1}
+
+/* Detach animation: when scrolling up into intro, move labels to top and fade */
+body.labels-detach .side-label{top:12px;transform:translateY(0) scale(.95);opacity:0}
+
+/* If labels should be hidden entirely */
+body.labels-hidden .side-label{opacity:0;pointer-events:none}
+
+/* (Labels visibility is controlled by JS; no CSS-specific hiding here) */
+
+/* responsive adjustments */
+@media (max-width:900px){
+  .hero-text{height:40vh}
+  .hero-text .paint{font-size:120px;stroke-width:8}
+  .topbar nav{padding:0 20px}
+  .side-label.left{left:18px}
+  .side-label.right{right:18px}
+}
+@media (max-width:520px){
+  .hero-text .paint{font-size:72px;stroke-width:6;letter-spacing:-2px}
+  .side-label{font-size:12px}
+}
+
+/* Page sections placeholders */
+/* page-section removed — placeholders deleted from index.html */
+
+/* Intro section styles */
+.intro{height:100vh;background:#000;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:10}
+.intro-inner{max-width:1200px;padding:40px;text-align:center;padding-top:92px}
+.intro-text{font-family:var(--nav-font);font-size:120px;color:#fff;letter-spacing:6px;opacity:0;transform:translateY(28px);transition:opacity .5s cubic-bezier(.2,.9,.2,1), transform .5s cubic-bezier(.2,.9,.2,1)}
+.intro.visible .intro-text{opacity:1;transform:translateY(0)}
+
+/* small subtext under HELLO that reveals together */
+.intro-subtext{margin-top:12px;color:#FFD400;font-family:var(--nav-font);font-size:18px;opacity:0;transform:translateY(18px);transition:opacity .55s cubic-bezier(.2,.9,.2,1), transform .55s cubic-bezier(.2,.9,.2,1)}
+.intro.visible .intro-subtext{opacity:1;transform:translateY(0)}
+
+/* when scrolled past entirely, keep a blackened state (optional) */
+.intro.blacken{background:#000}
+
+/* ensure the hero sits after intro */
+main.hero{position:relative;z-index:1}
+
+/* hero quote overlay */
+.hero-quote{position:absolute;z-index:2;font-family:var(--nav-font);font-size:18px;max-width:480px;text-align:right;color:rgba(255,255,255,0.95);padding:0 16px;line-height:1.25;right:40px;bottom:40px}
+.hero-quote{mix-blend-mode:screen;text-shadow:0 1px 0 rgba(0,0,0,0.6)}
+@media (max-width:900px){
+  .hero-quote{font-size:15px;right:28px;bottom:28px;max-width:320px}
+}
+@media (max-width:520px){
+  /* On small screens put quote centered at bottom so it doesn't overlap important details */
+  .hero-quote{position:absolute;right:16px;left:16px;bottom:18px;font-size:13px;text-align:center;max-width:unset}
+}
+
+/* second hero-specific tweaks */
+.hero-2 .photo{background-size:cover;background-position:center center}
+.center-quote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;text-align:center;padding:0 20px;display:inline-flex;flex-direction:column;align-items:center;gap:10px}
+.quote-link{color:var(--accent);font-weight:600;font-size:20px;text-decoration:none;padding-bottom:4px;opacity:0;transform:translateY(12px)}
+.quote-link:hover{opacity:1}
+
+/* fade-in from below animation */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.center-quote.visible .quote-link{animation:fadeInUp .72s cubic-bezier(.2,.9,.2,1) forwards}
+
+/* animated arrow styling */
+.quote-arrow{color:var(--accent);width:34px;height:34px;opacity:0;transform:translateY(-6px);transition:opacity .2s ease}
+@keyframes arrowBounce{0%{transform:translateY(-6px);opacity:0}30%{opacity:1}60%{transform:translateY(0)}100%{transform:translateY(-2px)}}
+.center-quote.visible .quote-arrow{animation:arrowBounce 1.2s ease infinite 0.3s}
+.quote-arrow path{stroke:currentColor}
+
+/* ensure on small screens the quote is slightly smaller */
+@media (max-width:520px){
+  .quote-link{font-size:16px}
+}
+
+/* make the quote yellow on the second hero specifically */
+.hero-2 .quote-link{color:#FFD400}
+
+/* blinking CTA below the quote */
+.below-cta{margin-top:6px}
+.blink-link{color:#FFD400;font-weight:700;text-decoration:none;opacity:0;display:inline-block}
+@keyframes blink{
+  0%{opacity:0}
+  10%{opacity:1}
+  50%{opacity:1}
+  60%{opacity:0}
+  100%{opacity:0}
+}
+.center-quote.visible .blink-link{animation:blink 1.6s linear infinite 0.9s}
+
+
+/* middle hero tweaks */
+.hero-mid .photo{background-size:cover;background-position:center center}
+.mid-caption{position:absolute;z-index:3;color:rgba(255,255,255,0.9);bottom:48px;left:48px;font-weight:600}
+
+/* Travel listing thumbnails: 16:9 cards with title overlay */
+.travel-grid{max-width:1100px;margin:20px auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.card{background:#0b0b0b;border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.04);position:relative;display:block}
+.card .thumb{width:100%;padding-top:56.25%;background-size:cover;background-position:center center}
+.card .overlay{position:absolute;left:12px;bottom:12px;color:#fff;background:rgba(0,0,0,0.28);padding:8px 12px;border-radius:6px}
+.card .overlay h3{margin:0;font-size:18px}
+
+
+
+/* small polish: hover nav */
+.topbar a:hover{color:var(--accent);transform:translateY(-2px);transition:all .18s ease}
+
+/* Contact section styles */
+.contact{background:#070707;color:#fff;padding:80px 20px}
+.contact-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.contact-left h2{font-family:var(--nav-font);font-size:32px;margin-bottom:8px}
+.contact-left p{opacity:0.9;margin-bottom:18px}
+.social-list{list-style:none;display:flex;gap:14px;padding:0;margin:0}
+.social-list a{color:#fff;text-decoration:none;padding:8px 12px;border:1px solid rgba(255,255,255,0.06);border-radius:6px;transition:all .15s ease}
+.social-list a:hover{transform:translateY(-3px);background:rgba(255,255,255,0.03)}
+
+.contact-right form{display:flex;flex-direction:column;gap:12px}
+.contact-right label{font-size:13px;opacity:0.9}
+.contact-right input,.contact-right textarea{background:#0e0e0e;border:1px solid rgba(255,255,255,0.06);color:#fff;padding:12px 14px;border-radius:6px}
+.contact-right input::placeholder,.contact-right textarea::placeholder{color:#999}
+.contact-right button{background:var(--accent);border:none;color:#fff;padding:10px 14px;border-radius:6px;cursor:pointer;font-weight:600}
+.contact-right .form-status{margin-top:8px;font-size:14px;min-height:22px}
+.contact-note{margin-top:10px;font-size:12px;opacity:0.8}
+
+@media (max-width:900px){
+  .contact-inner{grid-template-columns:1fr;gap:18px}
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Photo Hero — Replace assets/photo.jpg with your 16:9 photo</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <nav>
+  <a class="logo" href="#intro">Prasath</a>
+    </nav>
+  </header>
+
+  <!-- Intro black page that reveals HELLO as you scroll -->
+  <section class="intro" id="intro">
+    <div class="intro-inner">
+      <h1 class="intro-text">HELLO</h1>
+  <p class="intro-subtext">I'm Prasath<br>Just a guy who loves creating cool stuff</p>
+    </div>
+  </section>
+
+  <main class="hero">
+    <!-- Background photo: drop your 16:9 file at assets/photo.jpg -->
+    <div class="photo" role="img" aria-label="Hero photo">
+      <!-- Hero quote removed per request -->
+
+      <!-- small left/right labels like the sample page -->
+      <nav class="side-label left" aria-label="Left side pages">
+        <a href="projects.html" class="side-link">Projects</a>
+      </nav>
+      <nav class="side-label right" aria-label="Right side pages">
+        <a href="writing.html" class="side-link">Sometimes I write</a>
+        <a href="content.html" class="side-link">Content i like</a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Middle photo page (inserted between the two photo pages) -->
+  <main class="hero hero-mid">
+    <div class="photo" role="img" aria-label="Middle hero photo" style="background-image:url('assets/photo_mid.jpg')">
+      <!-- optional centered caption if you want -->
+      <div class="mid-caption" aria-hidden="true"> </div>
+    </div>
+  </main>
+
+  <!-- Second photo page -->
+  <main class="hero hero-2">
+    <div class="photo" role="img" aria-label="Second hero photo" style="background-image:url('assets/photo2.jpg')">
+      <div class="center-quote" aria-hidden="false">
+        <a href="travel.html" class="quote-link">It's the possibility of having a dream come true that makes life interesting</a>
+        <div class="below-cta">
+          <a href="travel.html" class="blink-link">wanna see the photos i took?</a>
+        </div>
+        <!-- animated arrow pointing to the quote -->
+        <svg class="quote-arrow" width="34" height="34" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <!-- vertical line up -->
+          <path d="M12 22V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <!-- arrow head pointing up -->
+          <path d="M6 14l6-6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </main>
+  <!-- Contact / dark page after the photo -->
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <h2>Get in touch</h2>
+        <ul class="social-list">
+          <li><a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a></li>
+          <li><a href="https://twitter.com/" target="_blank" rel="noopener" aria-label="Twitter">Twitter</a></li>
+          <li><a href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">YouTube</a></li>
+        </ul>
+      </div>
+
+      <div class="contact-right">
+        <form id="contact-form" data-endpoint="https://formspree.io/f/xovylqnj" novalidate>
+          <!-- Paste your Formspree endpoint into the data-endpoint attribute above -->
+          <label for="from_email">Your email</label>
+          <input id="from_email" name="replyto" type="email" placeholder="you@example.com" required>
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" placeholder="Write your message here" required></textarea>
+
+          <button type="submit">Send message</button>
+
+          <div class="form-status" aria-live="polite"></div>
+        </form>
+        <p class="contact-note">(Your email will not be shown on the site. Messages are delivered to me via a secure endpoint.)</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

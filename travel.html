@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Travel — Prasath</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ensure content sits below the fixed topbar */
+    main{padding-top:92px}
+    .travel-grid{max-width:1100px;margin:20px auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .card{background:#0b0b0b;border-radius:6px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.04)}
+    .travel-note{max-width:1100px;margin:0 auto;padding:10px 20px;color:#ddd}
+  </style>
+</head>
+<body>
+  <header class="topbar"><nav><a class="logo" href="index.html">Prasath</a></nav></header>
+
+  <main>
+    <div class="travel-note">
+      <h1 style="font-family:var(--nav-font);margin-bottom:8px">Travel</h1>
+    </div>
+
+    <div id="grid" class="travel-grid" aria-live="polite"></div>
+  </main>
+
+  <script>
+    // load the travel index and render cards
+    async function loadIndex(){
+      try{
+        const res = await fetch('assets/travel/index.json');
+        const data = await res.json();
+        const grid = document.getElementById('grid');
+        data.forEach(item=>{
+          const a = document.createElement('a');
+          a.href = `travel_gallery.html?city=${encodeURIComponent(item.slug)}`;
+          a.className = 'card';
+          // use a background thumb to keep 16:9 aspect and overlay the title on the image
+          a.innerHTML = `<div class="thumb" style="background-image:url('${item.thumb}')" aria-hidden="true"></div><div class="overlay"><h3>${item.title}</h3></div>`;
+          grid.appendChild(a);
+        });
+      }catch(err){
+        document.getElementById('grid').textContent = 'Failed to load travel index.';
+        console.error(err);
+      }
+    }
+    loadIndex();
+  </script>
+</body>
+</html>

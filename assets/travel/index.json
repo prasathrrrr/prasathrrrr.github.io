@@ -1,0 +1,7 @@
+[
+  { "slug": "manali", "title": "Manali", "thumb": "assets/travel/manali/thumb.jpg", "folder": "assets/travel/manali" },
+  { "slug": "chennai", "title": "Chennai", "thumb": "assets/travel/chennai/thumb.jpg", "folder": "assets/travel/chennai" },
+  { "slug": "solang-valley", "title": "Solang Valley", "thumb": "assets/travel/solang-valley/thumb.jpg", "folder": "assets/travel/solang-valley" },
+  { "slug": "delhi", "title": "Delhi", "thumb": "assets/travel/delhi/thumb.jpg", "folder": "assets/travel/delhi" },
+  { "slug": "agra", "title": "Agra", "thumb": "assets/travel/agra/thumb.jpg", "folder": "assets/travel/agra" }
+]
